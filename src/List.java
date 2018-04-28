@@ -1,45 +1,98 @@
+//Order for updating references: before, current, after, first, last
 public class List<T> {
     ListElement<T> first;
     ListElement<T> last;
+    int length = 0;
 
     public List() {
         first = null;
         last = null;
     }
-    public List(ListElement<T> first, ListElement<T> last) {
-        this.first = first;
-        this.last = last;
+    public List(T[] in) {
+        addAll(in);
     }
 
-    public ListElement<T> get(int l) throws ListIndexOutOfBoundsException {
+    private ListElement<T> getListElement(int index) throws ListIndexOutOfBoundsException {
+        if(index<0 || index>=length) {
+            throw new ListIndexOutOfBoundsException();
+        }
         ListElement<T> out = first;
-        for(int i=0; i<l; ++i) {
-            if(out.getNext() != null) {
-                out = out.getNext();
-            } else {
-                throw new ListIndexOutOfBoundsException();
-            }
+        for(int i=0; i<index; ++i) {
+            out = out.getNext();
         }
         return out;
     }
+    public T get(int index) throws ListIndexOutOfBoundsException {
+        return getListElement(index).getElement();
+    }
 
-    public void add(ListElement<T> in) {
-        last.setNext(in);
-        in.setPrev(last);
-        in.setNext(null);
-        last = in;
+    public int find(T target) {
+        int index;
+        ListElement<T> current = first;
+        for(index=0; index<length; ++index) {
+            if(index != 0) {
+                current = current.getNext();
+            }
+            if(current.getElement() == target) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    private void add(ListElement<T> in) {
+        if(last == null) {
+            first = in;
+            last = in;
+            in.clear();
+        } else {
+            last.setNext(in);
+            in.setPrev(last);
+            in.setNext(null);
+            last = in;
+        }
+        ++length;
     }
     public void add(T in) {
         ListElement<T> a = new ListElement<T>(in);
         add(a);
     }
-
-    public void insert(ListElement<T> in, int i) {
-
+    public void addAll(T[] in) {
+        for(T t : in) {
+            add(t);
+        }
     }
 
-    public ListElement<T> remove(int i) throws ListIndexOutOfBoundsException {
-        ListElement<T> rem = get(i);
+    public void insert(T in, int index) throws ListIndexOutOfBoundsException {
+        if(index<0 || index>length) {
+            throw new ListIndexOutOfBoundsException();
+        }
+        ListElement<T> ins = new ListElement<>(in);
+        if(length == 0) {
+            add(ins);
+        } else if(index == 0) {
+            ins.setNext(first);
+            first.setPrev(ins);
+            first = ins;
+        } else if(index == length) {
+            ins.setPrev(last);
+            last.setNext(ins);
+            last = ins;
+        } else {
+            ListElement<T> insBefore = getListElement(index);
+            insBefore.getPrev().setNext(ins);
+            ins.setPrev(insBefore.getPrev());
+            ins.setNext(insBefore);
+            insBefore.setPrev(ins);
+        }
+        assert get(index) == in;
+    }
+
+    public T remove(int index) throws ListIndexOutOfBoundsException {
+        if(index<0 || index>=length) {
+            throw new ListIndexOutOfBoundsException();
+        }
+        ListElement<T> rem = getListElement(index);
         if(rem == first && rem == last) {
             first = null;
             last = null;
@@ -53,7 +106,7 @@ public class List<T> {
             rem.getPrev().setNext(rem.getNext());
             rem.getNext().setPrev(rem.getPrev());
         }
-        rem.clear();
-        return rem;
+        --length;
+        return rem.getElement();
     }
 }
