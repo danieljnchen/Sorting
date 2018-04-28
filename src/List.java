@@ -17,10 +17,18 @@ public class List<T> {
     }
 
     public T getFirst() {
-        return first.getElement();
+        if(length != 0) {
+            return first.getElement();
+        } else {
+            return null;
+        }
     }
     public T getLast() {
-        return last.getElement();
+        if(length != 0) {
+            return last.getElement();
+        } else {
+            return null;
+        }
     }
 
     private ListElement<T> getListElement(int index) throws ListIndexOutOfBoundsException {
