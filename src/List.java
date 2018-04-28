@@ -121,4 +121,18 @@ public class List<T> {
         --length;
         return rem.getElement();
     }
+
+    public List<T> subset(int beginIndex, int endIndex) throws ListIndexOutOfBoundsException {
+        if(beginIndex<0 || endIndex>length || beginIndex>=endIndex) {
+            throw new ListIndexOutOfBoundsException();
+        }
+        List<T> out = new List<>();
+        for(int i=beginIndex; i<endIndex; ++i) {
+            out.add(get(i));
+        }
+        return out;
+    }
+    public List<T> subset(int endIndex) throws ListIndexOutOfBoundsException {
+        return subset(0,endIndex);
+    }
 }
