@@ -1,8 +1,8 @@
 //Order for updating references: before, current, after, first, last
 public class List<T> {
-    ListElement<T> first;
-    ListElement<T> last;
-    int length = 0;
+    private ListElement<T> first;
+    private ListElement<T> last;
+    private int length = 0;
 
     public List() {
         first = null;
@@ -10,6 +10,17 @@ public class List<T> {
     }
     public List(T[] in) {
         addAll(in);
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public T getFirst() {
+        return first.getElement();
+    }
+    public T getLast() {
+        return last.getElement();
     }
 
     private ListElement<T> getListElement(int index) throws ListIndexOutOfBoundsException {
@@ -33,7 +44,7 @@ public class List<T> {
             if(index != 0) {
                 current = current.getNext();
             }
-            if(current.getElement() == target) {
+            if(current.getElement().equals(target)) {
                 return index;
             }
         }
@@ -85,6 +96,7 @@ public class List<T> {
             ins.setNext(insBefore);
             insBefore.setPrev(ins);
         }
+        ++length;
         assert get(index) == in;
     }
 
