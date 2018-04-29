@@ -22,26 +22,21 @@ public class Main {
         }
         CompareableList<CompareableString> strings = new CompareableList<>(list);
         printStatus(strings);
-        strings.mergeSort();*/
-        /*try {
-            CompareableList<CompareableString> stringsSubset = strings.subset(0, 0);
-            printStatus(stringsSubset);
-        } catch(ListIndexOutOfBoundsException e) {
-            e.printStackTrace();
-        }*/
-        /*printStatus(strings);
         strings.add(new CompareableString("Bye!"));
         printStatus(strings);
-        strings.mergeSort();
+        strings = CompareableList.mergeSort(strings);
         printStatus(strings);*/
-        int[] test = {1,5,-2,3,8};
+        /*int[] test = {1,5,-2,3,8};
         for(int i : test) {
             System.out.println(i);
         }
         test = mergeSort(test);
         for(int i : test) {
             System.out.println(i);
-        }
+        }*/
+        /*for(int i=0; i<50; ++i) {
+            System.out.println(RandomString.generateString(3,5));
+        }*/
     }
     public static int[] mergeSort(int[] list) {
         if(list.length <= 1) {
